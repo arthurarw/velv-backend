@@ -14,10 +14,10 @@ class RefreshServersAndLocationsTask extends Task
 {
 
     /**
-     * @return bool
+     * @return array
      * @throws \Exception
      */
-    protected function handle(): bool
+    protected function handle(): array
     {
         try {
             $path = storage_path('/app/db/servers.xlsx');
@@ -31,7 +31,9 @@ class RefreshServersAndLocationsTask extends Task
             $quantityServersFromSpreadsheet = count($servers);
             $quantityServersFromCache = Cache::driver('redis')->get('quantity_servers');
             if ($quantityServersFromSpreadsheet == $quantityServersFromCache) {
-                return true;
+                $locations = Cache::driver('redis')->get('locations');
+                $servers = Cache::driver('redis')->get('servers');
+                return $this->defaultResponse($locations, $servers);
             }
 
             $data = [];
@@ -58,20 +60,18 @@ class RefreshServersAndLocationsTask extends Task
                 $locations[] = $item[3];
             }
 
+            $secondsTtl = 60;
             $locations = array_unique($locations);
 
-            $secondsTtl = 60;
             Cache::driver('redis')->put('locations', $locations, $secondsTtl);
             Cache::driver('redis')->put('servers', $data, $secondsTtl);
             Cache::driver('redis')->put('quantity_servers', count($data), $secondsTtl);
 
-            return true;
+            return $this->defaultResponse($locations, $data);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         } catch (InvalidArgumentException $e) {
         }
-
-        return true;
     }
 
     /**
@@ -126,6 +126,19 @@ class RefreshServersAndLocationsTask extends Task
             'converted_storage_gb' => $totalMemory,
             'unity' => $unityMemory,
             'storage_type' => $storageType
+        ];
+    }
+
+    /**
+     * @param array $locations
+     * @param array $servers
+     * @return array
+     */
+    private function defaultResponse(array $locations, array $servers): array
+    {
+        return [
+            'locations' => $locations,
+            'servers' => $servers
         ];
     }
 }

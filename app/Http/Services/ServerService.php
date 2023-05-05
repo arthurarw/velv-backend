@@ -21,11 +21,10 @@ class ServerService
     {
         $locations = Cache::driver('redis')->get('locations');
         if (empty($locations)) {
-            (new RefreshServersAndLocationsTask())->run();
+            $locations = (new RefreshServersAndLocationsTask())->run()['locations'];
         }
 
         return response()->json([
-            'success' => true,
             'data' => $locations
         ]);
     }
@@ -40,17 +39,13 @@ class ServerService
             $filter = implode(';', $data);
             $servers = Cache::driver('redis')->get($filter);
             if ($servers) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Success!',
-                    'data' => $servers
-                ]);
+                return response()->json($servers);
             }
         }
 
         $servers = Cache::driver('redis')->get('servers');
         if (empty($servers)) {
-            (new RefreshServersAndLocationsTask())->run();
+            $servers = (new RefreshServersAndLocationsTask())->run()['servers'];
         }
 
         $servers = (new Collection($servers))->paginate($data['per_page'] ?? 15, $data['page'] ?? 1);
