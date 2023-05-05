@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Imports\ServersImport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -21,6 +23,16 @@ class IndexController extends Controller
 
         $servers = $sheet->getActiveSheet()->toArray();
         unset($servers[0]);
+
+        $quantityServersFromSpreadsheet = count($servers);
+        $quantityServersFromCache = Cache::get('quantity_servers');
+        if ($quantityServersFromSpreadsheet == $quantityServersFromCache) {
+            return response()->json([
+                'success' => true,
+                'data' => Cache::get('servers')
+            ]);
+        }
+
 
         $data = [];
         $locations = [];
@@ -48,7 +60,15 @@ class IndexController extends Controller
 
         $locations = array_unique($locations);
 
-        dd($locations, $data);
+
+        Cache::put('locations', $locations);
+        Cache::put('servers', $data);
+        Cache::put('quantity_servers', count($data));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Nice!'
+        ]);
     }
 
     private function getRamSizeAndType(string $ram)
