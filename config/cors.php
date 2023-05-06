@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*', 'https://*.vercel.app'],
+    'allowed_origins' => ['*', '18.230.138.180'],
 
     'allowed_origins_patterns' => [],
 
