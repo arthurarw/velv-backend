@@ -70,7 +70,6 @@ services:
         volumes:
             - .:/app
         command: npm run dev
-        restart: unless-stopped
         ports:
             - "3001:3001"
         environment:
