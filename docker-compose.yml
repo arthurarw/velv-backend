@@ -21,19 +21,11 @@ services:
         restart: unless-stopped
         ports:
             - "8989:80"
-        #            - "443:443"
         volumes:
             - ./:/var/www
             - ./docker/nginx/:/etc/nginx/conf.d/
-        #            - ./docker/certbot/www:/var/www/certbot/:ro
         networks:
             - laravel
-
-    # certbot
-    #    certbot:
-    #        image: certbot/certbot:latest
-    #        volumes:
-    #            - ./docker/certbot/www/:/var/www/certbot/:rw
 
     # db mysql
     db:
