@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.1-fpm-alpine
 
 # set your user name, ex: user=bernardo
 ARG user=arthur
