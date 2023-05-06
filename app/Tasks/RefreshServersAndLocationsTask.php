@@ -62,6 +62,8 @@ class RefreshServersAndLocationsTask extends Task
 
             $secondsTtl = 60;
             $locations = array_unique($locations);
+            $locations = array_values($locations);
+            sort($locations);
 
             Cache::driver('redis')->put('locations', $locations, $secondsTtl);
             Cache::driver('redis')->put('servers', $data, $secondsTtl);
