@@ -6,7 +6,7 @@ ARG uid=1000
 
 # Install system dependencies
 #RUN apt-get update && apt-get install -y \
-RUN apk update && apk add -y \
+RUN apk update && apk add \
     git \
     curl \
     libpng-dev \
