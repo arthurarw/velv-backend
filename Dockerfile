@@ -1,11 +1,12 @@
-FROM php:8.1-fpm
+FROM php:8.1-fpm-alpine
 
 # set your user name, ex: user=bernardo
 ARG user=arthur
 ARG uid=1000
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+#RUN apt-get update && apt-get install -y \
+RUN apk update && apk add -y \
     git \
     curl \
     libpng-dev \
@@ -16,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     unzip
 
 # Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apk cache clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-configure zip
