@@ -3,8 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Tasks\RefreshServersAndLocationsTask;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 /**
  *
@@ -33,6 +35,7 @@ class RefreshServersCommand extends Command
     public function handle(): mixed
     {
         try {
+            Log::driver('cron-servers')->info('Cron executada às: ' . Carbon::now()->format('d/m/Y H:i:s'));
             return (new RefreshServersAndLocationsTask())->run();
         } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode());
