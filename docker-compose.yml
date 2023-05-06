@@ -62,21 +62,6 @@ services:
         networks:
             - laravel
 
-    web:
-        build:
-            context: ../velv-frontend
-            target: runner
-            dockerfile: Dockerfile
-        volumes:
-            - .:/app
-        command: npm run dev
-        ports:
-            - "3001:3001"
-        environment:
-            NODE_ENV: development
-        networks:
-            - laravel
-
 networks:
     laravel:
         driver: bridge
