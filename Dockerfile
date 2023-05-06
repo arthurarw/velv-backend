@@ -1,12 +1,11 @@
-FROM php:8.1-fpm-alpine
+FROM php:8.1-fpm
 
 # set your user name, ex: user=bernardo
 ARG user=arthur
 ARG uid=1000
 
 # Install system dependencies
-#RUN apt-get update && apt-get install -y \
-RUN apk update && apk add \
+RUN apt-get update && apt-get install -y \
     git \
     curl \
     libpng-dev \
@@ -17,7 +16,7 @@ RUN apk update && apk add \
     unzip
 
 # Clear cache
-RUN apk cache clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-configure zip
@@ -42,6 +41,5 @@ WORKDIR /var/www
 
 # Copy custom configurations PHP
 COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
-COPY crontab /etc/crontabs/root
 
 USER $user
