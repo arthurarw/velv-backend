@@ -48,13 +48,13 @@ class ServerService
             $servers = (new RefreshServersAndLocationsTask())->run()['servers'];
         }
 
-        $servers = (new Collection($servers))->paginate($data['per_page'] ?? 15, $data['page'] ?? 1);
+        $servers = (new Collection($servers));
         if (!empty($data['storage'])) {
             $servers = $servers->where('converted_storage_gb', '<=', $data['storage']);
         }
 
         if (!empty($data['ram'])) {
-            $servers = $servers->whereIn('ram', $data['ram']);
+            $servers = $servers->whereIn('ram', explode(',', $data['ram']));
         }
 
         if (!empty($data['hard_disk_type'])) {
@@ -73,6 +73,7 @@ class ServerService
             ], 404);
         }
 
+        $servers = $servers->paginate($data['per_page'] ?? 10, $data['page'] ?? 1);
         if (!empty($filter)) {
             Cache::driver('redis')->put($filter, $servers->isNotEmpty() ? $servers : [], 60);
         }

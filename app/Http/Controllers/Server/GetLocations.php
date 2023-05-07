@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Services\ServerService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Psr\SimpleCache\InvalidArgumentException;
 
 class GetLocations extends Controller
 {
@@ -15,6 +16,7 @@ class GetLocations extends Controller
 
     /**
      * Handle the incoming request.
+     * @throws InvalidArgumentException
      */
     public function __invoke(Request $request): JsonResponse
     {

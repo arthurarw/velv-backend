@@ -46,6 +46,7 @@ class RefreshServersAndLocationsTask extends Task
                 $data[] = [
                     'id' => $id,
                     'model' => $item[0],
+                    'original_ram' => $item[1],
                     'ram' => $ram['size'],
                     'ram_type' => $ram['type'],
                     'storage' => $item[2],
