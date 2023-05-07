@@ -30,14 +30,15 @@ class ServerTest extends TestCase
     public function test_get_locations(): void
     {
         $data = [
-            0 => "AmsterdamAMS-01",
-            105 => "Washington D.C.WDC-01",
-            107 => "San FranciscoSFO-12",
-            108 => "SingaporeSIN-11",
-            123 => "DallasDAL-10",
-            139 => "FrankfurtFRA-10",
-            153 => "Hong KongHKG-10"
+            "AmsterdamAMS-01",
+            "Washington D.C.WDC-01",
+            "San FranciscoSFO-12",
+            "SingaporeSIN-11",
+            "DallasDAL-10",
+            "FrankfurtFRA-10",
+            "Hong KongHKG-10"
         ];
+        sort($data);
 
         $service = $this->service->getLocations();
         $service = $service->getData()->data;
@@ -61,13 +62,13 @@ class ServerTest extends TestCase
             "price" => "€49.99",
             "converted_storage_gb" => 4000,
             "converted_storage_unity" => "TB",
-            "storage_type" => "SATA"
+            "storage_type" => "SATA",
+            "original_ram" => "16GBDDR3",
         ];
 
         $service = $this->service->findAll(['page' => 1, 'per_page' => 1]);
-        $service = $service->getData()->data;
-        $service = $service->data[0];
+        $service = $service->getData(true)['data'][0];
 
-        $this->assertEquals($data, collect($service)->toArray());
+        $this->assertEquals($data, $service);
     }
 }
