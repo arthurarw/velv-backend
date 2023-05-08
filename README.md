@@ -1,6 +1,6 @@
 # Setup Project
 
------
+---
 ### Step by step
 
 Clone the repo
@@ -79,6 +79,16 @@ On your system you need to put this cron command:
 ```
 
 This command will update the data every 1 minute.
+
+---
+
+### Tests
+
+To run the tests, inside the container, run the following command:
+
+```sh
+php artisan test
+```
 
 ---
 
