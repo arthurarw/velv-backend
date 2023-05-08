@@ -1,5 +1,6 @@
 # Setup Project
 
+-----
 ### Step by step
 
 Clone the repo
@@ -79,8 +80,12 @@ On your system you need to put this cron command:
 
 This command will update the data every 1 minute.
 
-Access the project:
+---
+
+Access the project on local:
 
 [http://localhost:8989](http://localhost:8989)
+
+Link on production
 
 [http://ec2-18-230-138-180.sa-east-1.compute.amazonaws.com:3000/](http://ec2-18-230-138-180.sa-east-1.compute.amazonaws.com:3000/)
