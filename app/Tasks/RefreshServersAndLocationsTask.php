@@ -30,10 +30,10 @@ class RefreshServersAndLocationsTask extends Task
             unset($servers[0]);
 
             $quantityServersFromSpreadsheet = count($servers);
-            $quantityServersFromCache = Cache::driver('redis')->get('quantity_servers');
+            $quantityServersFromCache = Cache::get('quantity_servers');
             if ($quantityServersFromSpreadsheet == $quantityServersFromCache) {
-                $locations = Cache::driver('redis')->get('locations');
-                $servers = Cache::driver('redis')->get('servers');
+                $locations = Cache::get('locations');
+                $servers = Cache::get('servers');
                 return $this->defaultResponse($locations, $servers);
             }
 
@@ -67,9 +67,9 @@ class RefreshServersAndLocationsTask extends Task
             $locations = array_values($locations);
             sort($locations);
 
-            Cache::driver('redis')->put('locations', $locations, $secondsTtl);
-            Cache::driver('redis')->put('servers', $data, $secondsTtl);
-            Cache::driver('redis')->put('quantity_servers', count($data), $secondsTtl);
+            Cache::put('locations', $locations, $secondsTtl);
+            Cache::put('servers', $data, $secondsTtl);
+            Cache::put('quantity_servers', count($data), $secondsTtl);
 
             return $this->defaultResponse($locations, $data);
         } catch (Exception $e) {

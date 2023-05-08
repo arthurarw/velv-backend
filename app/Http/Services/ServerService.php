@@ -18,7 +18,7 @@ class ServerService
      */
     public function getLocations(): JsonResponse
     {
-        $locations = Cache::driver('redis')->get('locations');
+        $locations = Cache::get('locations');
         if (empty($locations)) {
             $locations = (new RefreshServersAndLocationsTask())->run()['locations'];
         }
@@ -38,13 +38,13 @@ class ServerService
         $filter = null;
         if (!empty($data)) {
             $filter = implode(';', $data);
-            $servers = Cache::driver('redis')->get($filter);
+            $servers = Cache::get($filter);
             if ($servers) {
                 return response()->json($servers);
             }
         }
 
-        $servers = Cache::driver('redis')->get('servers');
+        $servers = Cache::get('servers');
         if (empty($servers)) {
             $servers = (new RefreshServersAndLocationsTask())->run()['servers'];
         }
@@ -76,7 +76,7 @@ class ServerService
         }
 
         if (!empty($filter)) {
-            Cache::driver('redis')->put($filter, $servers->isNotEmpty() ? $servers : [], 60);
+            Cache::put($filter, $servers->isNotEmpty() ? $servers : [], 60);
         }
 
         return response()->json($servers);
