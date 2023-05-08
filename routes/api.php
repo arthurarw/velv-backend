@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Server\GetLocations;
-use App\Http\Controllers\Server\SearchServers;
+use App\Http\Controllers\Server\Index;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,5 +15,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/servers', Index::class)->name('servers.index');
 Route::get('/servers/locations', GetLocations::class)->name('servers.locations');
-Route::get('/servers', SearchServers::class)->name('servers.search');

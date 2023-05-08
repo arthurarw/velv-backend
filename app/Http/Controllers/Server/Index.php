@@ -8,7 +8,7 @@ use App\Http\Services\ServerService;
 use Illuminate\Http\JsonResponse;
 use Psr\SimpleCache\InvalidArgumentException;
 
-class SearchServers extends Controller
+class Index extends Controller
 {
     public function __construct(private ServerService $service)
     {

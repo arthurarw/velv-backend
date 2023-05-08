@@ -2,7 +2,6 @@
 
 namespace App\Http\Services;
 
-use App\Support\Collection;
 use App\Tasks\RefreshServersAndLocationsTask;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
@@ -35,20 +34,20 @@ class ServerService
     public function findAll(array $data): JsonResponse
     {
         $filter = null;
-        if (!empty($data)) {
+        /*if (!empty($data)) {
             $filter = implode(';', $data);
             $servers = Cache::driver('redis')->get($filter);
             if ($servers) {
                 return response()->json($servers);
             }
-        }
+        }*/
 
         $servers = Cache::driver('redis')->get('servers');
         if (empty($servers)) {
             $servers = (new RefreshServersAndLocationsTask())->run()['servers'];
         }
 
-        $servers = (new Collection($servers));
+        $servers = collect($servers);
         if (!empty($data['storage'])) {
             $servers = $servers->where('converted_storage_gb', '<=', $data['storage']);
         }
@@ -65,6 +64,7 @@ class ServerService
             $servers = $servers->where('location', $data['location']);
         }
 
+        $servers = $servers->paginate(10, 1);
         if ($servers->isEmpty()) {
             return response()->json([
                 'success' => false,
@@ -73,7 +73,6 @@ class ServerService
             ], 404);
         }
 
-        $servers = $servers->paginate($data['per_page'] ?? 10, $data['page'] ?? 1);
         if (!empty($filter)) {
             Cache::driver('redis')->put($filter, $servers->isNotEmpty() ? $servers : [], 60);
         }
