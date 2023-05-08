@@ -29,18 +29,20 @@ class ServerService
     }
 
     /**
+     * @param array $data
+     * @return JsonResponse
      * @throws InvalidArgumentException
      */
     public function findAll(array $data): JsonResponse
     {
         $filter = null;
-        /*if (!empty($data)) {
+        if (!empty($data)) {
             $filter = implode(';', $data);
             $servers = Cache::driver('redis')->get($filter);
             if ($servers) {
                 return response()->json($servers);
             }
-        }*/
+        }
 
         $servers = Cache::driver('redis')->get('servers');
         if (empty($servers)) {

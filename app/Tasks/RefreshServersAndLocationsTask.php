@@ -3,6 +3,7 @@
 namespace App\Tasks;
 
 use App\Abstract\Task;
+use Exception;
 use Illuminate\Support\Facades\Cache;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Psr\SimpleCache\InvalidArgumentException;
@@ -14,8 +15,8 @@ class RefreshServersAndLocationsTask extends Task
 {
 
     /**
-     * @return array
-     * @throws \Exception
+     * @return array[]
+     * @throws Exception
      */
     protected function handle(): array
     {
@@ -71,9 +72,10 @@ class RefreshServersAndLocationsTask extends Task
             Cache::driver('redis')->put('quantity_servers', count($data), $secondsTtl);
 
             return $this->defaultResponse($locations, $data);
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage(), $e->getCode());
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode());
         } catch (InvalidArgumentException $e) {
+            throw new Exception($e->getMessage(), $e->getCode());
         }
     }
 

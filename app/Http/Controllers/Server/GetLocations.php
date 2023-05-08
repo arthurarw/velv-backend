@@ -8,14 +8,21 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Psr\SimpleCache\InvalidArgumentException;
 
+/**
+ *
+ */
 class GetLocations extends Controller
 {
+    /**
+     * @param ServerService $service
+     */
     public function __construct(private ServerService $service)
     {
     }
 
     /**
-     * Handle the incoming request.
+     * @param Request $request
+     * @return JsonResponse
      * @throws InvalidArgumentException
      */
     public function __invoke(Request $request): JsonResponse

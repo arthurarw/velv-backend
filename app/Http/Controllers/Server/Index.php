@@ -8,14 +8,21 @@ use App\Http\Services\ServerService;
 use Illuminate\Http\JsonResponse;
 use Psr\SimpleCache\InvalidArgumentException;
 
+/**
+ *
+ */
 class Index extends Controller
 {
+    /**
+     * @param ServerService $service
+     */
     public function __construct(private ServerService $service)
     {
     }
 
     /**
-     * Handle the incoming request.
+     * @param SearchServersRequest $request
+     * @return JsonResponse
      * @throws InvalidArgumentException
      */
     public function __invoke(SearchServersRequest $request): JsonResponse
