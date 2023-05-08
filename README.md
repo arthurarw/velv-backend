@@ -1,37 +1,22 @@
+# Setup Project
 
-# Setup Docker Para Projetos Laravel (8, 9 ou 10)
-[Assine a Academy, e Seja VIP!](https://academy.especializati.com.br)
+### Step by step
 
-### Passo a passo
-Clone Repositório
+Clone the repo
+
 ```sh
-git clone https://github.com/especializati/setup-docker-laravel.git
+git clone https://github.com/arthurarw/velv-backend.git
 ```
 
-Clone os Arquivos do Laravel
-```sh
-git clone https://github.com/laravel/laravel.git app-laravel
-```
+Create the .env file
 
-
-Copie os arquivos docker-compose.yml, Dockerfile e o diretório docker/ para o seu projeto
-```sh
-cp -rf setup-docker-laravel/* app-laravel/
-```
-```sh
-cd app-laravel/
-```
-
-
-Crie o Arquivo .env
 ```sh
 cp .env.example .env
 ```
 
-
-Atualize as variáveis de ambiente do arquivo .env
+Update environment variables on .env file
 ```dosini
-APP_NAME="Especializa Ti"
+APP_NAME="Backend"
 APP_URL=http://localhost:8989
 
 DB_CONNECTION=mysql
@@ -50,30 +35,52 @@ REDIS_PASSWORD=null
 REDIS_PORT=6379
 ```
 
-
-Suba os containers do projeto
+Up the project containers
 ```sh
 docker-compose up -d
 ```
 
-
-Acessar o container
+Access the container
 ```sh
 docker-compose exec app bash
 ```
 
+Install the dependencies
 
-Instalar as dependências do projeto
 ```sh
 composer install
 ```
 
+Generate the key project
 
-Gerar a key do projeto Laravel
 ```sh
 php artisan key:generate
 ```
 
+The "database" of project is in
 
-Acessar o projeto
+```sh
+storage/app/db/servers.xlsx
+```
+
+After the complete installation of the project, run the following command:
+
+```sh
+php artisan app:refresh-servers-command
+```
+
+This command will populate the data;
+
+On your system you need to put this cron command:
+
+```sh
+* * * * * cd /PROJECT_FOLDER && docker-compose exec -it app php artisan app:refresh-servers-command
+```
+
+This command will update the data every 1 minute.
+
+Access the project:
+
 [http://localhost:8989](http://localhost:8989)
+
+[http://ec2-18-230-138-180.sa-east-1.compute.amazonaws.com:3000/](http://ec2-18-230-138-180.sa-east-1.compute.amazonaws.com:3000/)
